@@ -35,9 +35,7 @@ config.json
 
 
 ### 4. 轉換成 Shadowrocket MASQUE URL
-1. 下載或 Clone 本專案。
-2. 雙擊開啟 `index.html`。
-3. 將 usque 產生的 `config.json` 拖進網頁，或按「點擊選擇檔案」。
-4. 確認 Endpoint、內部 IP、Port、DNS 等設定。
-5. 按「複製 URL」。
-6. 將 `masque://...` URL 貼到 Shadowrocket 匯入。
+1. 將 usque 產生的 `config.json` 拖進網頁，或按「點擊選擇檔案」。
+2. 確認 Endpoint、內部 IP、Port、DNS 等設定。
+3. 按「複製 URL」。
+4. 將 `masque://...` URL 貼到 Shadowrocket 匯入。
