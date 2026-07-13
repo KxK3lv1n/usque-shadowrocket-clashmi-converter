@@ -35,7 +35,7 @@ config.json
 
 
 ### 4. 轉換成 Shadowrocket MASQUE URL
-1. 將 usque 產生的 `config.json` 拖進網頁，或按「點擊選擇檔案」。
+1. 將 usque 產生的 `config.json` 拖進[Converter網頁入口](https://kxk3lv1n.github.io/usque-shadowrocket-converter)，或按「點擊選擇檔案」。
 2. 確認 Endpoint、內部 IP、Port、DNS 等設定。
 3. 按「複製 URL」。
 4. 將 `masque://...` URL 貼到 Shadowrocket 匯入。
