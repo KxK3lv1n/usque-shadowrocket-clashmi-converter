@@ -1,0 +1,13 @@
+.platform-tabs {
+  display: grid; grid-template-columns: 1fr 1fr; max-width: 420px; height: 44px;
+  margin: 0 0 22px; border: 1px solid #d8dee6; border-radius: 9px; overflow: hidden;
+}
+.platform-tabs button { border: 0; background: #fff; cursor: pointer; font-weight: 700; color: #657184; }
+.platform-tabs button.active { color: #fff; background: linear-gradient(#149b92, #0b6e69); }
+.url-row pre {
+  margin: 0; padding: 18px 20px; border-radius: 10px; background: #111827; color: #d1fae5;
+  font: 500 13px/1.7 ui-monospace, monospace; overflow-wrap: anywhere; white-space: pre-wrap;
+  max-height: 360px; overflow: auto;
+}
+.yaml-row { min-height: 220px; }
+[hidden] { display: none !important; }

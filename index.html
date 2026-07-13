@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Usque → Shadowrocket MASQUE</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Usque → Shadowrocket / Clash Mi MASQUE</title>
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="clash-mi.css">
 </head>
 <body>
-  <header><h1>Usque <b>→</b> Shadowrocket MASQUE</h1><span class="privacy">♢ 100% 本機處理</span></header>
+  <header><h1>Usque <b>→</b> MASQUE Converter</h1><span class="privacy">♢ 100% 本機處理</span></header>
   <main>
     <section class="grid">
       <article class="card upload" id="dropZone" tabindex="0" role="button" aria-label="選擇 Usque JSON 檔案">
@@ -48,11 +48,18 @@
       </article>
     </section>
     <section class="card output">
-      <div class="output-head"><div><h2>Shadowrocket MASQUE URL</h2><p id="hint">載入有效的 Usque JSON 後，URL 會在這裡產生。</p></div><span id="status">等待檔案</span></div>
-      <div class="url-row"><code id="result">masque://…</code><button id="copyButton" disabled>▣<br><strong>複製 URL</strong></button></div>
+      <div class="platform-tabs" aria-label="輸出格式"><button id="shadowrocketTab" class="active" type="button">Shadowrocket</button><button id="clashTab" type="button">Clash Mi</button></div>
+      <div id="shadowrocketPanel">
+        <div class="output-head"><div><h2>Shadowrocket MASQUE URL</h2><p id="hint">載入有效的 Usque JSON 後，URL 會在這裡產生。</p></div><span id="status">等待檔案</span></div>
+        <div class="url-row"><code id="result">masque://…</code><button id="copyButton" disabled>▣<br><strong>複製 URL</strong></button></div>
+      </div>
+      <div id="clashPanel" hidden>
+        <div class="output-head"><div><h2>Clash Mi / Mihomo MASQUE YAML</h2><p id="clashHint">載入有效的 Usque JSON 後，即可下載設定檔。</p></div><span id="clashStatus">等待檔案</span></div>
+        <div class="url-row yaml-row"><pre id="yamlPreview"># 等待載入 Usque JSON…</pre><button id="downloadYamlButton" disabled>⇩<br><strong>下載 YAML</strong></button></div>
+      </div>
     </section>
     <p class="note">檔案內容不會上傳或離開你的瀏覽器。URL 包含私人金鑰，請妥善保管。</p>
   </main>
-  <script src="script.js"></script>
+  <script src="yaml-template.js"></script><script src="script.js"></script>
 </body>
 </html>
