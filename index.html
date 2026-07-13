@@ -12,7 +12,7 @@
     <section class="grid">
       <article class="card upload" id="dropZone" tabindex="0" role="button" aria-label="選擇 Usque JSON 檔案">
         <input id="fileInput" type="file" accept=".json,application/json" hidden>
-        <div class="icon">⇧</div><h2>拖放 Usque JSON 檔案到這裡</h2>
+        <div class="icon">⇧</div><h2>拖放 Usque .JSON 檔案到這裡</h2>
         <button id="chooseButton" type="button" class="link-button">或點擊選擇檔案</button><span class="pill">.json</span>
         <div id="fileReady" class="file-ready" hidden><span></span><strong id="fileName"></strong><b>✓</b></div>
         <p id="error" class="error" role="alert"></p>
@@ -37,9 +37,9 @@
             <optgroup id="jsonEndpointGroup" label="JSON 原始 Endpoint" hidden></optgroup>
           </select>
           <label for="endpoint">IP 位址</label><input id="endpoint" readonly>
-          <label for="port">Port</label><input id="port" readonly>
+          <label for="port">端口</label><input id="port" readonly>
           <label for="tunnelIp">內部 IP</label><input id="tunnelIp" readonly placeholder="載入 JSON 後自動填入">
-          <label for="dns">DNS</label><input id="dns" value="1.1.1.1, 1.0.0.1">
+          <label for="dns">DNS域名</label><input id="dns" value="1.1.1.1, 1.0.0.1">
           <label for="udp">UDP</label><button id="udp" class="toggle on" role="switch" aria-checked="true"><span></span></button>
           <label for="cc">Congestion Control</label><select id="cc"><option>bbr</option><option>cubic</option><option>reno</option></select>
           <label for="flag">Flag</label><input id="flag" value="CDN">
