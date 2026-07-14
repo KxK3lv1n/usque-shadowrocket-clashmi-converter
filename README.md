@@ -1,6 +1,6 @@
 [Converter網頁入口](https://kxk3lv1n.github.io/usque-shadowrocket-clashmi-converter)
 
-# Usque JSON → Shadowrocket (IOS) / Clash Mi (IOS) / Mihomo內核 MASQUE(Cloudflare) Converter
+# Usque JSON → Shadowrocket (IOS) / Clash Mi (IOS) / Mihomo MASQUE(Cloudflare) Converter
 這是一個純前端的轉換工具，可將 [Diniboy1123/usque](https://github.com/Diniboy1123/usque) 產生的 `config.json` 轉換成 Shadowrocket 可匯入的 `masque://` URL 或可供Clash Mi (Mihomo)匯入的.yaml檔案。
 
 ### 1. 下載 usque Windows 版本
