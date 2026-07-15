@@ -8,6 +8,24 @@
   const enc = (v) => encodeURIComponent(v).replace(/%2C/gi, ",");
 
   function applyEndpoint() { generate(); }
+  function applyJsonEndpoint(value) {
+    e.endpointIp.querySelectorAll("option[data-json-endpoint]").forEach((option)=>option.remove());
+    e.endpointPort.querySelectorAll("option[data-json-port]").forEach((option)=>option.remove());
+    const raw=String(value||"").trim().replace(/^https?:\/\//i,"");
+    const match=raw.match(/^(\d{1,3}(?:\.\d{1,3}){3})(?::(\d+))?$/);
+    if(!match)return;
+    const [,ip,jsonPort]=match;
+    if(!Array.from(e.endpointIp.options).some((option)=>option.value===ip)){
+      const option=document.createElement("option");option.value=ip;option.textContent=`${ip}（JSON Endpoint）`;option.dataset.jsonEndpoint="true";e.endpointIp.prepend(option);
+    }
+    e.endpointIp.value=ip;
+    if(jsonPort){
+      if(!Array.from(e.endpointPort.options).some((option)=>option.value===jsonPort)){
+        const option=document.createElement("option");option.value=jsonPort;option.textContent=`${jsonPort}（JSON Port）`;option.dataset.jsonPort="true";e.endpointPort.prepend(option);
+      }
+      e.endpointPort.value=jsonPort;
+    }
+  }
   function generate() {
     if (!config || !e.endpointIp.value || !e.tunnelIp.value || !config.private_key || !config.endpoint_pub_key) {
       e.result.textContent="masque://…"; e.copyButton.disabled=true; e.yamlPreview.textContent="# 等待載入 Usque JSON…"; e.downloadYamlButton.disabled=true; return;
@@ -26,6 +44,7 @@
       const missing=["private_key","endpoint_pub_key","ipv4"].filter((k)=>!c[k]);
       if(missing.length) throw new Error(`缺少必要欄位：${missing.join(", ")}`);
       config=c; e.tunnelIp.value=c.ipv4; e.fileName.textContent=file.name; e.fileReady.hidden=false;
+      applyJsonEndpoint(c.endpoint_v4);
       generate();
     } catch(err) { config=null; e.fileReady.hidden=true; e.error.textContent=err instanceof Error?err.message:"無法解析 JSON"; generate(); }
   }
