@@ -1,26 +1,22 @@
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id);
-  const ids = ["fileInput","dropZone","chooseButton","fileReady","fileName","error","endpointPreset","jsonEndpointGroup","endpoint","port","tunnelIp","dns","udp","cc","flag","name","result","copyButton","hint","status","shadowrocketTab","clashTab","shadowrocketPanel","clashPanel","clashHint","clashStatus","yamlPreview","downloadYamlButton"];
+  const ids = ["fileInput","dropZone","chooseButton","fileReady","fileName","error","endpointIp","endpointPort","tunnelIp","dns","udp","cc","flag","name","result","copyButton","hint","status","shadowrocketTab","clashTab","shadowrocketPanel","clashPanel","clashHint","clashStatus","yamlPreview","downloadYamlButton"];
   const e = Object.fromEntries(ids.map((id) => [id, $(id)]));
   let config = null, udpEnabled = true, clashYaml = "";
   const pemBody = (v="") => v.replace(/-----BEGIN PUBLIC KEY-----|-----END PUBLIC KEY-----/g, "").replace(/\s/g, "");
   const enc = (v) => encodeURIComponent(v).replace(/%2C/gi, ",");
 
-  function applyEndpoint() {
-    const i = e.endpointPreset.value.lastIndexOf(":");
-    e.endpoint.value = e.endpointPreset.value.slice(0, i);
-    e.port.value = e.endpointPreset.value.slice(i + 1);
-    generate();
-  }
+  function applyEndpoint() { generate(); }
   function generate() {
-    if (!config || !e.endpoint.value || !e.tunnelIp.value || !config.private_key || !config.endpoint_pub_key) {
+    if (!config || !e.endpointIp.value || !e.tunnelIp.value || !config.private_key || !config.endpoint_pub_key) {
       e.result.textContent="masque://…"; e.copyButton.disabled=true; e.yamlPreview.textContent="# 等待載入 Usque JSON…"; e.downloadYamlButton.disabled=true; return;
     }
     const params = [["publicKey",pemBody(config.endpoint_pub_key)],["privateKey",config.private_key.trim()],["ip",e.tunnelIp.value],["dns",e.dns.value.trim()],["udp",udpEnabled?"1":"0"],["cc",e.cc.value],["flag",e.flag.value.trim()]].map(([k,v])=>`${k}=${enc(v)}`).join("&");
-    e.result.textContent=`masque://${e.endpoint.value}:${e.port.value}?${params}#${enc(e.name.value.trim()||"WARP-MASQUE")}`;
+    e.result.textContent=`masque://${e.endpointIp.value}:${e.endpointPort.value}?${params}#${enc(e.name.value.trim()||"WARP-MASQUE")}`;
     e.copyButton.disabled=false; e.hint.textContent="已完成轉換，可以直接複製並匯入 Shadowrocket。"; e.status.textContent="準備就緒"; e.status.classList.add("ready");
-    clashYaml=window.MIHOMO_MASQUE_TEMPLATE.replace(/^(\s{4}server:)\s*.*$/m,`$1 ${e.endpoint.value}`).replace(/^(\s{4}port:)\s*.*$/m,`$1 ${e.port.value}`).replace(/^(\s{4}private-key:)\s*.*$/m,`$1 ${config.private_key.trim()}`).replace(/^(\s{4}public-key:)\s*.*$/m,`$1 ${pemBody(config.endpoint_pub_key)}`).replace(/^(\s{4}ip:)\s*.*$/m,`$1 ${e.tunnelIp.value}`);
+    const clashDns=e.dns.value.split(/[\s,]+/).filter(Boolean).join(", ");
+    clashYaml=window.MIHOMO_MASQUE_TEMPLATE.replace(/^(\s{4}server:)\s*.*$/m,`$1 ${e.endpointIp.value}`).replace(/^(\s{4}port:)\s*.*$/m,`$1 ${e.endpointPort.value}`).replace(/^(\s{4}private-key:)\s*.*$/m,`$1 ${config.private_key.trim()}`).replace(/^(\s{4}public-key:)\s*.*$/m,`$1 ${pemBody(config.endpoint_pub_key)}`).replace(/^(\s{4}ip:)\s*.*$/m,`$1 ${e.tunnelIp.value}`).replace(/^(\s{4}udp:)\s*.*$/m,`$1 ${udpEnabled}`).replace(/^(\s{4}remote-dns-resolve:)\s*.*$/m,"$1 true").replace(/^(\s{4}dns:)\s*.*$/m,`$1 [ ${clashDns} ]`);
     e.yamlPreview.textContent=clashYaml; e.downloadYamlButton.disabled=false; e.clashHint.textContent="已套用目前 Endpoint 與 usque 金鑰，可直接下載並匯入 Clash Mi。"; e.clashStatus.textContent="準備就緒"; e.clashStatus.classList.add("ready");
   }
   async function load(file) {
@@ -30,11 +26,10 @@
       const missing=["private_key","endpoint_pub_key","ipv4"].filter((k)=>!c[k]);
       if(missing.length) throw new Error(`缺少必要欄位：${missing.join(", ")}`);
       config=c; e.tunnelIp.value=c.ipv4; e.fileName.textContent=file.name; e.fileReady.hidden=false;
-      if(c.endpoint_v4){ e.jsonEndpointGroup.hidden=false; e.jsonEndpointGroup.innerHTML=""; const o=document.createElement("option"); o.value=`${c.endpoint_v4}:443`; o.textContent=`${c.endpoint_v4}:443（JSON）`; e.jsonEndpointGroup.appendChild(o); }
       generate();
     } catch(err) { config=null; e.fileReady.hidden=true; e.error.textContent=err instanceof Error?err.message:"無法解析 JSON"; generate(); }
   }
-  e.endpointPreset.addEventListener("change",applyEndpoint); applyEndpoint();
+  e.endpointIp.addEventListener("change",applyEndpoint); e.endpointPort.addEventListener("change",applyEndpoint); applyEndpoint();
   function showPlatform(platform){const clash=platform==="clash";e.shadowrocketPanel.hidden=clash;e.clashPanel.hidden=!clash;e.shadowrocketTab.classList.toggle("active",!clash);e.clashTab.classList.toggle("active",clash)}
   e.shadowrocketTab.addEventListener("click",()=>showPlatform("shadowrocket"));e.clashTab.addEventListener("click",()=>showPlatform("clash"));
   e.chooseButton.addEventListener("click",(x)=>{x.stopPropagation();e.fileInput.click()}); e.dropZone.addEventListener("click",()=>e.fileInput.click());
